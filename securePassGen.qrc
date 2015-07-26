@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>key.ico</file>
+        <file>exit.png</file>
+        <file>info.png</file>
+        <file>help.png</file>
+        <file>key.png</file>
+    </qresource>
+</RCC>

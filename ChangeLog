@@ -1,0 +1,21 @@
+
+Version 0.1
+---------------------------------------
+2010-04-05
+  First public release
+  Built using Qt SDK 2010.02 (Qt 4.6.2)
+  gcc/g++ (GCC) 4.4.0
+
+2010-06-29
+  Built using Qt SDK 2010.04 (Qt 4.6.4)
+  gcc/g++ (GCC) 4.4.0
+
+Version 0.2
+---------------------------------------
+2012-03-03
+  Changed default length of generated passwords from 12 to 8.
+  Added clear of output and test edit boxes when Generate button clicked,
+  before passwords generated.
+
+---------------------------------------
+J. Parziale
