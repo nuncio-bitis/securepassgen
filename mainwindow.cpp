@@ -30,7 +30,7 @@
 
 //******************************************************************************
 
-#define INITIAL_NUMBER_OF_PASSWORDS 10
+#define INITIAL_NUMBER_OF_PASSWORDS 20
 #define INITIAL_PASSWORD_LENGTH 8
 #define OUTPUT_FILENAME "securePassGen_output.txt"
 
@@ -43,11 +43,11 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->setupUi(this);
 
   // Set up default flags.
-  useLower   = TRUE;
-  useUpper   = FALSE;
-  useNumber  = FALSE;
-  useSpecial = FALSE;
-  usePattern = TRUE;
+  useLower   = true;
+  useUpper   = false;
+  useNumber  = false;
+  useSpecial = false;
+  usePattern = true;
 
   // Set the practice text edit box to hide input characters.
   ui->testTextEdit->setEchoMode(QLineEdit::Password);
@@ -144,6 +144,9 @@ void MainWindow::on_generateButton_clicked()
   // Clear output and test edit boxes.
   on_clearButton_clicked();
 
+  QString line;
+  bool addNewline = false;
+
   // Create list of passwords
   for (int count = 0; count < numToGenerate; count++) {
     QString newPassword;
@@ -169,15 +172,29 @@ void MainWindow::on_generateButton_clicked()
           }
         }
 
-        ui->outputBox->appendPlainText(newPatPassword);
+        line.append(newPatPassword);
       } else {
-        ui->outputBox->appendPlainText(newPassword);
+          line.append(newPassword);
       }
+
     } else {
       ui->statusbar->showMessage("Error - no password generated.");
     }
 
+    if (addNewline) {
+        ui->outputBox->appendPlainText(line);
+        line.clear();
+    } else {
+        line.append("   ");
+    }
+    addNewline = !addNewline;
+
   } // end for(count)
+
+  if (addNewline) {
+      ui->outputBox->appendPlainText(line);
+      line.clear();
+  }
 }
 
 //******************************************************************************
@@ -243,16 +260,16 @@ void MainWindow::on_patternCheck_clicked()
   usePattern = (ui->patternCheck->checkState() == Qt::Checked);
 
   if (usePattern) {
-    useNumber  = FALSE;
+    useNumber  = false;
     ui->numbersCheck->setCheckState(Qt::Unchecked);
-    ui->numbersCheck->setEnabled(FALSE);
+    ui->numbersCheck->setEnabled(false);
 
-    useSpecial = FALSE;
+    useSpecial = false;
     ui->specialsCheck->setCheckState(Qt::Unchecked);
-    ui->specialsCheck->setEnabled(FALSE);
+    ui->specialsCheck->setEnabled(false);
   } else {
-    ui->numbersCheck->setEnabled(TRUE);
-    ui->specialsCheck->setEnabled(TRUE);
+    ui->numbersCheck->setEnabled(true);
+    ui->specialsCheck->setEnabled(true);
   }
 }
 
@@ -296,7 +313,7 @@ void MainWindow::on_testTextEdit_editingFinished()
      QStringList outlines = outtext.split("\n", QString::SkipEmptyParts);
      foreach (QString line, outlines) {
        line.replace("-","");
-       if (line.compare(pwText) == 0) {
+       if ((pwText.length() == charsPerPassword) && line.contains(pwText)) {
          ui->statusbar->showMessage(msg + "Password matches!", 5000);
          return;
        }
