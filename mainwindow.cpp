@@ -27,6 +27,7 @@
 
 #include <QFile>
 #include <QMessageBox>
+#include <QRandomGenerator>
 
 //******************************************************************************
 
@@ -89,7 +90,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   // Initial seeding of the RNG.
   // qrand is called in MainWindow::PickCharacter
-  qsrand((uint)QTime::currentTime().msec());
+//  qsrand((uint)QTime::currentTime().msec());
+  QRandomGenerator::securelySeeded() ;
 }
 
 
@@ -310,7 +312,7 @@ void MainWindow::on_testTextEdit_editingFinished()
   if (pwSize > 0) {
      // Try and match the entered password with what's in the output window.
      QString outtext = ui->outputBox->toPlainText();
-     QStringList outlines = outtext.split("\n", QString::SkipEmptyParts);
+     QStringList outlines = outtext.split(QRegularExpression("\n"), Qt::SkipEmptyParts);
      foreach (QString line, outlines) {
        line.replace("-","");
        if ((pwText.length() == charsPerPassword) && line.contains(pwText)) {

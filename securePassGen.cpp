@@ -36,6 +36,7 @@
 #include "mainwindow.h"
 #include "ui_securePassGen.h"
 #include <stdint.h>
+#include <QRandomGenerator>
 
 using namespace std;
 
@@ -148,7 +149,8 @@ QChar MainWindow::PickCharacter(QString inputValidChars)
 {
   uint32_t index;
 
-  index = qrand() & 0xFF;
+//  index = qrand() & 0xFF;
+  index = QRandomGenerator::global()->generate();
   return inputValidChars[index % inputValidChars.length()];
 }
 
